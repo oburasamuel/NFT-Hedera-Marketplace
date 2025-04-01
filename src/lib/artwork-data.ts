@@ -189,3 +189,8 @@ export function searchArtworks(query: string): ArtworkData[] {
     artwork.description?.toLowerCase().includes(lowercaseQuery)
   );
 }
+
+export async function getAllArtworkIds(): Promise<string[]> {
+  // Replace this with your actual data fetching logic
+  return ['artwork1', 'artwork2', 'artwork3'];
+}

@@ -6,6 +6,29 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArtworkCardProps } from '@/components/artwork-card';
 import { getArtworkById } from '@/lib/artwork-data';
 
+
+import { getAllArtworkIds } from '@/lib/artwork-data'; // Assume this function fetches all artwork IDs
+import { Metadata } from 'next';
+
+export async function generateStaticParams() {
+  const ids = await getAllArtworkIds(); // Fetch all artwork IDs
+  return ids.map((id: string) => ({ id }));
+}
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const artwork = getArtworkById(params.id);
+  if (!artwork) {
+    return {
+      title: 'Artwork Not Found',
+    };
+  }
+  return {
+    title: artwork.title,
+    description: artwork.description || 'View this amazing artwork.',
+  };
+}
+
+
 export default function ArtworkPage({ params }: { params: { id: string } }) {
   const artwork = getArtworkById(params.id);
 
@@ -141,3 +164,4 @@ export default function ArtworkPage({ params }: { params: { id: string } }) {
     </>
   );
 }
+
